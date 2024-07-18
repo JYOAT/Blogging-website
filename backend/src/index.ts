@@ -132,9 +132,9 @@ app.get('/api/v1/blog/bulk', async (c)=>{
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
 }).$extends(withAccelerate());
-  const post = prisma.post.findMany();
+  const post = await prisma.post.findMany();
   return c.json({
-    post
+     posts : post
   })
 
 })  
@@ -165,7 +165,6 @@ app.get('/api/v1/blog/:id', async (c)=>{
     });
   }
 })
-
 
 
 
