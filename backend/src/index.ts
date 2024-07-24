@@ -2,6 +2,8 @@ import { Hono } from 'hono'
 import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import { sign, verify } from 'hono/jwt'
+import { createBlogInput, signinInput, signupInput, updateBlogInput } from '@jyotsna20032002/medium-common'
+
 
 
 const app = new Hono<{
@@ -17,8 +19,9 @@ const app = new Hono<{
 
 app.use('/api/v1/blog/*', async (c, next) => {
 	const authheader = c.req.header('Authorization')|| "";
-  const user = await verify(authheader, c.env.JWT_SECRET);
-	if (user) {
+  try{
+    const user = await verify(authheader, c.env.JWT_SECRET);
+    if (user) {
 		c.set('userId',user.id);
 		await next();
 	}
@@ -28,6 +31,16 @@ app.use('/api/v1/blog/*', async (c, next) => {
       message: "You r not logged in"
     })
   }
+}catch(e){
+  c.status(403);
+    return c.json({
+      message: "You r not logged in"
+    })
+
+}
+
+
+    
 })
 
 app.post('/api/v1/user/signup', async (c)=>{
@@ -35,6 +48,13 @@ app.post('/api/v1/user/signup', async (c)=>{
     datasourceUrl: c.env.DATABASE_URL,
 }).$extends(withAccelerate());
 const body = await c.req.json();
+const {success} = signupInput.safeParse(body);
+if (!success){
+  c.status(411);
+  return c.json({
+    message :"inputs not correct"
+  });
+}
 try {
 const user = await prisma.user.create({
   data:{
@@ -59,12 +79,20 @@ const token = await sign({id: user.id},c.env.JWT_SECRET)
 
 
 app.post('/api/v1/user/signin', async (c) => {
+  
 	const prisma = new PrismaClient({
 		datasourceUrl: c.env.DATABASE_URL	,
 	}).$extends(withAccelerate());
+  const body = await c.req.json();
 
-	const body = await c.req.json();
-	try{
+	
+  const { success} = signinInput.safeParse(body);
+  if (!success){
+      c.status(411);
+      return c.json({
+         message :"inputs not correct"
+  });
+}
   const user = await prisma.user.findFirst({
 		where: {
 			email : body.email,
@@ -79,11 +107,6 @@ app.post('/api/v1/user/signin', async (c) => {
 
 	const jwt = await sign({ id: user.id }, c.env.JWT_SECRET);
 	return c.json({ jwt });
-}catch(e){
-  c.status(411);
-  return c.text("Invalid")
-
-}
 
 })
 
@@ -94,6 +117,13 @@ app.post('/api/v1/blog', async (c)=>{
     datasourceUrl: c.env.DATABASE_URL,
 }).$extends(withAccelerate());
   const body = await c.req.json();
+  const {success} = createBlogInput.safeParse(body);
+if (!success){
+  c.status(411);
+  return c.json({
+    message :"inputs not correct"
+  });
+} 
   
   const post = await prisma.post.create({
     data:{
@@ -113,6 +143,13 @@ app.put('/api/v1/blog', async(c)=>{
     datasourceUrl: c.env.DATABASE_URL,
 }).$extends(withAccelerate());
   const body = await c.req.json();
+  const {success} = updateBlogInput.safeParse(body);
+if (!success){
+  c.status(411);
+  return c.json({
+    message :"inputs not correct"
+  });
+}
   const post = await prisma.post.update({
     where :{
       id : body.id
@@ -134,7 +171,7 @@ app.get('/api/v1/blog/bulk', async (c)=>{
 }).$extends(withAccelerate());
   const post = await prisma.post.findMany();
   return c.json({
-     posts : post
+      blogs : post
   })
 
 })  
