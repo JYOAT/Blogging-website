@@ -3,6 +3,8 @@ import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import { sign, verify } from 'hono/jwt'
 import { createBlogInput, signinInput, signupInput, updateBlogInput } from '@jyotsna20032002/medium-common'
+import { cors } from 'hono/cors'
+
 
 
 
@@ -12,11 +14,11 @@ const app = new Hono<{
     JWT_SECRET : string;
   },
   Variables : {
-    userId : string | any ;
+    userId : string | any;
   }
   
 }>()
-
+app.use('/*', cors())
 app.use('/api/v1/blog/*', async (c, next) => {
 	const authheader = c.req.header('Authorization')|| "";
   try{
@@ -169,7 +171,18 @@ app.get('/api/v1/blog/bulk', async (c)=>{
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
 }).$extends(withAccelerate());
-  const post = await prisma.post.findMany();
+  const post = await prisma.post.findMany({
+    select:{
+      content:true,
+      title: true,
+      id : true,
+      author :{
+        select:{
+          name:true
+        }
+      }
+    }
+  });
   return c.json({
       blogs : post
   })
@@ -186,12 +199,22 @@ app.get('/api/v1/blog/:id', async (c)=>{
     const post = await prisma.post.findFirst({
     where :{
       id : Number(id)
+    },
+    select:{
+      id:true,
+      title : true,
+      content:true,
+      author: {
+        select:{
+          name: true
+        }
+      }
     }
   
   })
 
   return c.json({
-    post
+    blog: post
   })
   }
   catch(e){
