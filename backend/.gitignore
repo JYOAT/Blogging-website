@@ -1,0 +1,6 @@
+.env
+package-lock.json
+.wrangler
+node_modules
+prisma
+*.toml
