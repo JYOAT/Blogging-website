@@ -31,3 +31,9 @@ lerna-debug.log*
 
 # misc
 .DS_Store
+.env
+package-lock.json
+.wrangler
+node_modules
+prisma
+*.toml
