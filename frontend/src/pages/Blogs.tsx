@@ -1,7 +1,7 @@
 import { BlogCard } from "../components/BlogCard";
 import { Appbar } from "../components/Appbar";
 import { BlogSkeleton } from "../components/BlogSkeleton";
-import { useBlogs } from "../hooks/index";
+import { useBlogs } from "../hooks/index.ts";
 
 export const Blogs = () => {
   const { loading, blogs } = useBlogs();
@@ -28,16 +28,10 @@ export const Blogs = () => {
       <Appbar />
       <div className="flex justify-center">
         <div>
-          {blogs.map(
-            (blog: {
-              id: number;
-              author: { name: any };
-              title: string;
-              content: string;
-            }) => (
+          {blogs.map((blog) => (
               <BlogCard
                 id={blog.id}
-                authorName={"Anonymous"}
+                authorName={blog.author.name|| "Anonymous"}
                 title={blog.title}
                 content={blog.content}
                 publishedDate={"2nd Feb 2024"}
