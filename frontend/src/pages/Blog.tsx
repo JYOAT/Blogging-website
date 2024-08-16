@@ -7,7 +7,7 @@ import {useParams} from "react-router-dom";
 // atomFamilies/selectorFamilies
 export const Blog = () => {
     const { id } = useParams();
-    console.log(id);
+    
     const {loading, blog} = useBlog({
         id: id || ""
     });

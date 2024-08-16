@@ -18,7 +18,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
         `${BACKEND_URL}/api/v1/user/${type === "signup" ? "signup" : "signin"}`,
         postInputs
       );
-      const token = response.data;
+      const token= response.data;
       localStorage.setItem("token", token["jwt"]);
       navigate("/blogs");
     } catch (e) {
@@ -56,7 +56,9 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
                     name: e.target.value,
                   });
                 }}
+        
               />
+              
             ) : null}
             <LabelledInput
               label="Email"

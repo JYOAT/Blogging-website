@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { BACKEND_URL } from "../config";
+import { BACKEND_URL } from "../config.ts";
 
 export interface Blog {
   content: string;
@@ -11,7 +11,7 @@ export interface Blog {
   };
 }
 
-export const useBlog = ({ id }: { id: string }) => {
+export const useBlog = ({ id }: { id: string}) => {
   const [loading, setLoading] = useState(true);
   const [blog, setBlog] = useState<Blog>();
 
@@ -21,9 +21,9 @@ export const useBlog = ({ id }: { id: string }) => {
         headers: {
           Authorization: localStorage.getItem("token"),
         },
-      })
-      .then((response) => {
-        setBlog(response.data.blog);
+      }).then((response) => {
+        setBlog(response.data.blog
+        );
         setLoading(false);
       });
   }, [id]);

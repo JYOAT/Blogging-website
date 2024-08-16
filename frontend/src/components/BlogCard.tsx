@@ -57,13 +57,19 @@ export function Avatar({
         size === "small" ? "w-6 h-6" : "w-10 h-10"
       }`}
     >
-      <span
-        className={`${
-          size === "small" ? "text-xs" : "text-md"
-        } font-extralight text-gray-600 dark:text-gray-300`}
-      >
-        {name[0]}
-      </span>
+        <div className="flex items-center justify-center w-12 h-12 bg-gray-500 rounded-full text-white text-lg font-bold">
+      {name[0].toUpperCase()}
+        </div>
+        
+      
     </div>
   );
 }
+
+/*<span
+className={`${
+    size === "small" ? "text-xs" : "text-md"
+  } font-extralight text-gray-600 `}
+>
+  {name[0]}
+</span>*/
