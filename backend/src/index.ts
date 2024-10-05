@@ -26,7 +26,7 @@ app.use('*', cors({
   credentials: true,
 }));
 
-const allowedOrigins = ['https://blog-ten-zeta-22.vercel.app', 'http://localhost:5173'];
+/*const allowedOrigins = ['https://blog-ten-zeta-22.vercel.app', 'http://localhost:5173'];
 
 app.options('*', (c) => {
   c.res.headers.set('Access-Control-Allow-Origin', c.req.header('Origin')||"");
@@ -45,7 +45,7 @@ app.use('*', (c, next) => {
     c.res.headers.set('Access-Control-Allow-Credentials', 'true');
   }
   return next();
-});
+});*/
 app.use('/api/v1/blog/*', async (c, next) => {
 	const authheader = c.req.header('Authorization')|| "";
   try{
