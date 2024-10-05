@@ -19,11 +19,26 @@ const app = new Hono<{
   
 }>()
 //app.use('/*', cors()) 
-app.use('/*', cors({
-  origin: 'https://your-vercel-app-url.vercel.app', // Specify your Vercel URL or '*'
-  allowMethods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowHeaders: ['Content-Type', 'Authorization'],
-}));
+const allowedOrigins = ['https://blog-ten-zeta-22.vercel.app', 'http://localhost:5173'];
+
+app.options('*', (c) => {
+  c.res.headers.set('Access-Control-Allow-Origin', c.req.header('Origin')||"");
+  c.res.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  c.res.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  c.res.headers.set('Access-Control-Allow-Credentials', 'true');
+  return c.text('', 204); // No content for OPTIONS
+});
+
+app.use('*', (c, next) => {
+  const origin = c.req.header('Origin')||"";
+  if (allowedOrigins.includes(origin)) {
+    c.res.headers.set('Access-Control-Allow-Origin', origin);
+    c.res.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    c.res.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    c.res.headers.set('Access-Control-Allow-Credentials', 'true');
+  }
+  return next();
+});
 app.use('/api/v1/blog/*', async (c, next) => {
 	const authheader = c.req.header('Authorization')|| "";
   try{
