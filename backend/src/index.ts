@@ -18,7 +18,12 @@ const app = new Hono<{
   }
   
 }>()
-app.use('/*', cors()) 
+//app.use('/*', cors()) 
+app.use('/*', cors({
+  origin: 'https://your-vercel-app-url.vercel.app', // Specify your Vercel URL or '*'
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowHeaders: ['Content-Type', 'Authorization'],
+}));
 app.use('/api/v1/blog/*', async (c, next) => {
 	const authheader = c.req.header('Authorization')|| "";
   try{
