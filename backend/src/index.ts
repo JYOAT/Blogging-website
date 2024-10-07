@@ -24,7 +24,7 @@ app.options('*', (c) => {
   const origin = c.req.header('Origin')||"";
 
   // Allow specific origins (Vercel URL and localhost for development)
-  const allowedOrigins = ['https://blog-jyotsna-kumars-projects.vercel.app', 'http://localhost:5173'];
+  const allowedOrigins = ['https://blog-jyotsna-kumars-projects.vercel.app'];
 
   if (allowedOrigins.includes(origin)) {
     c.res.headers.set('Access-Control-Allow-Origin', origin);
