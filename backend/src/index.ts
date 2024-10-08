@@ -21,10 +21,11 @@ const app = new Hono<{
 app.use('/*', cors());
 // Handle OPTIONS requests for preflight CORS requests
 app.options('*', (c) => {
-  const origin = c.req.header('Origin')||"";
+  
 
   // Allow specific origins (Vercel URL and localhost for development)
   const allowedOrigins = ['https://blog-jyotsna-kumars-projects.vercel.app'];
+  const origin = c.req.header('Origin')||"";
 
   if (allowedOrigins.includes(origin)) {
     c.res.headers.set('Access-Control-Allow-Origin', origin);
