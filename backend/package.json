@@ -8,7 +8,7 @@
     "@jyotsna20032002/medium-common": "^1.0.1",
     "@prisma/client": "^5.18.0",
     "@prisma/extension-accelerate": "^1.1.0",
-    "hono": "^4.4.13",
+    "hono": "^4.6.13",
     "prisma": "^5.18.0"
   },
   "devDependencies": {
