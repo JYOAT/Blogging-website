@@ -21,8 +21,11 @@ const app = new Hono<{
   };
 }>();
 
-app.use("/*", corsMiddleware);
-app.use("/*", cors());
+app.use(
+  cors({
+    origin: "https://blog-ten-zeta-22.vercel.app/signup",
+  })
+);
 
 app.use("/api/v1/blog/*", async (c, next) => {
   const authheader = c.req.header("Authorization") || "";
