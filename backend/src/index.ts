@@ -20,22 +20,9 @@ const app = new Hono<{
     userId: string | any;
   };
 }>();
+
+app.use("/*", corsMiddleware);
 app.use("/*", cors());
-app.use("/*", async (c, next) => {
-  c.header(
-    "Access-Control-Allow-Origin",
-    "https://blog-git-master-jyotsna-kumars-projects.vercel.app"
-  );
-  c.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  c.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  c.header("Access-Control-Allow-Credentials", "true");
-
-  if (c.req.method === "OPTIONS") {
-    return c.text("", 204);
-  }
-
-  return next();
-});
 
 app.use("/api/v1/blog/*", async (c, next) => {
   const authheader = c.req.header("Authorization") || "";
