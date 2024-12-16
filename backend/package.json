@@ -1,6 +1,7 @@
 {
   "name": "backend",
   "scripts": {
+    "build": "tsc",
     "dev": "wrangler dev src/index.ts",
     "deploy": "wrangler deploy --minify src/index.ts"
   },
