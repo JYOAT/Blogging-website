@@ -21,12 +21,17 @@ const app = new Hono<{
   };
 }>();
 
-/*app.use(
+app.use(
   cors({
-    origin: "https://blog-ten-zeta-22.vercel.app/signup",
+    origin: [
+      "https://blog-ten-zeta-22.vercel.app/signup",
+      "https://blog-jyotsna-kumars-projects.vercel.app/signup",
+      "http://localhost:5173",
+    ],
+    allowMethods: ["GET", "POST"],
+    credentials: true,
   })
-);*/
-app.use("/*", corsMiddleware);
+);
 
 app.use("/api/v1/blog/*", async (c, next) => {
   const authheader = c.req.header("Authorization") || "";

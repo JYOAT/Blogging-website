@@ -1,11 +1,9 @@
 name = "backend"
 compatibility_date = "2024-07-13"
 
-[workers_dev]
-cache = false # Disable caching temporarily during debugging
+workers_dev = true 
 
-[durable_object]
-bindings = []
+
 
 # [vars]
 # MY_VAR = "my-variable"
